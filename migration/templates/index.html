@@ -1,0 +1,27 @@
+<h1>Проверка миграции в облако</h1>
+
+<form>
+  Допустимо открытых портов после миграции:
+  <input name="limit" value="{{ limit }}">
+  <button>Применить</button>
+</form>
+
+<canvas id="c1" width="400" height="200"></canvas>
+<canvas id="c2" width="300" height="200"></canvas>
+
+<table border="1">
+  <tr><th>Сервис</th><th>Портов до</th><th>Портов после</th><th>Статус</th></tr>
+  {% for s, a, b, st in rows %}
+  <tr><td>{{ s }}</td><td>{{ a }}</td><td>{{ b }}</td><td>{{ st }}</td></tr>
+  {% endfor %}
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(c1, {type: "bar", options: {responsive: false},
+  data: {labels: {{ names|safe }}, datasets: [
+    {label: "До миграции", data: {{ before }}},
+    {label: "После миграции", data: {{ after }}}]}});
+new Chart(c2, {type: "pie", options: {responsive: false},
+  data: {labels: ["стоп", "ок"], datasets: [{data: [{{ stop }}, {{ ok }}]}]}});
+</script>
